@@ -1,7 +1,7 @@
 Package: BioTIMEr
 Type: Package
 Title: Tools to Use and Explore the 'BioTIME' Database
-Version: 0.2.2
+Version: 0.2.3
 Authors@R: c(
   person("Alban", "Sagouis", role = c("aut","cre"),
         email = "alban.sagouis@idiv.de",
@@ -52,7 +52,7 @@ Description: The 'BioTIME' database was first published in
     and meta data, the full versions of which are freely available on the 'BioTIME'
     website <https://biotime.st-andrews.ac.uk/home.php>.
 Depends: R (>= 3.5.0)
-Imports: dplyr, tidyr, ggplot2, vegan, dggridR, checkmate
+Imports: dplyr, tidyr, ggplot2, vegan, dggridR (>= 3.1.0), checkmate
 Suggests: maps, knitr, rmarkdown, formatR, testthat (>= 3.0.0), vdiffr
 Config/testthat/edition: 3
 Config/testthat/parallel: true
@@ -62,7 +62,7 @@ LazyData: true
 RoxygenNote: 7.3.1
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2024-04-02 21:33:16 UTC; rstudio
+Packaged: 2024-07-30 14:27:39 UTC; as80fywe
 Author: Alban Sagouis [aut, cre] (<https://orcid.org/0000-0002-3827-1063>),
   Faye Moyes [aut] (<https://orcid.org/0000-0001-9687-0593>),
   Inês S. Martins [aut, rev] (<https://orcid.org/0000-0003-4328-7286>),
@@ -80,4 +80,4 @@ Author: Alban Sagouis [aut, cre] (<https://orcid.org/0000-0002-3827-1063>),
   The Leverhulme Centre for Anthropocene Biodiversity grant RC-2018-021
     [fnd]
 Repository: CRAN
-Date/Publication: 2024-04-03 19:53:03 UTC
+Date/Publication: 2024-07-31 04:50:02 UTC
