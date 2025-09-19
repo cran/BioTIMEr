@@ -1,7 +1,7 @@
 Package: BioTIMEr
 Type: Package
 Title: Tools to Use and Explore the 'BioTIME' Database
-Version: 0.2.4
+Version: 0.2.5
 Authors@R: c(
   person("Alban", "Sagouis", role = c("aut","cre"),
         email = "alban.sagouis@idiv.de",
@@ -59,10 +59,10 @@ Config/testthat/parallel: true
 Language: en-GB
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2025-06-06 14:34:32 UTC; as80fywe
+Packaged: 2025-09-19 12:26:30 UTC; as80fywe
 Author: Alban Sagouis [aut, cre] (ORCID:
     <https://orcid.org/0000-0002-3827-1063>),
   Faye Moyes [aut] (ORCID: <https://orcid.org/0000-0001-9687-0593>),
@@ -86,4 +86,4 @@ Author: Alban Sagouis [aut, cre] (ORCID:
   The Leverhulme Centre for Anthropocene Biodiversity grant RC-2018-021
     [fnd]
 Repository: CRAN
-Date/Publication: 2025-06-06 15:00:02 UTC
+Date/Publication: 2025-09-19 12:40:02 UTC
