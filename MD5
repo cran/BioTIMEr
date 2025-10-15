@@ -1,7 +1,7 @@
-d0316fcaf7841c6bfc4c978e8693db93 *DESCRIPTION
+9d5ec04fa4b7198465796fdd7e681a2c *DESCRIPTION
 03396c2196e522ada0ab6772299021ff *LICENSE
 0e9bab6df1a6ac30cb949912886b0675 *NAMESPACE
-c5885562e08307ef39849e2a4c427efc *NEWS.md
+284a6ec2d4368f4711f6ac900cc81ba6 *NEWS.md
 c7b3d96be9de90b15dab8957fb660447 *R/BioTIMEr-package.R
 3afeb930b773f815a57da20050566fb3 *R/data.R
 34706641ce2927bbacc140d148e2c260 *R/ggcolorsBioTIME.R
@@ -19,7 +19,7 @@ a10b683dbb3e811b2099577830e66c1c *inst/CITATION
 601f1eea9680739703d9d72fc7bd7a9b *inst/CITATION_article
 938560be41adc1e6d8e405ad78f6492b *inst/doc/vignette1.R
 fc4baf0011c1ba8f2cd206536c5877c2 *inst/doc/vignette1.Rmd
-6a3880033ec1c8ec488ccab7f96275ea *inst/doc/vignette1.html
+3b9a6e3421c0cf3dd7e532870b0add23 *inst/doc/vignette1.html
 0cc14b3cee739f0303ba72e32c591401 *man/BTsubset_data.Rd
 5fa1c869b15d70bbb48046947fe036a6 *man/BTsubset_meta.Rd
 4e3bbcdcbb790c35f246cfe099b9ac71 *man/BioTIME-palette.Rd
@@ -89,7 +89,7 @@ f55fef8339176ef09294c48789f855de *tests/testthat/_snaps/scales/fill-warm-true-fa
 17bc3f912f7f7063fb759d18df9b6d03 *tests/testthat/_snaps/workflow_alpha.md
 db00fe05106b920e34b69acc1ae7a5a0 *tests/testthat/_snaps/workflow_beta.md
 39c69be0acff47f5c80fff7d6bf4f88b *tests/testthat/test-gridding.R
-6db1ef7691ac980b15c53bbf4616bbcb *tests/testthat/test-metrics.R
+e8b84e0d44223a49add452cc4dbf8e0f *tests/testthat/test-metrics.R
 2c7ea1580d9da9ce4f8f268e5cd36e92 *tests/testthat/test-plots.R
 4780bb1349e969e6061e473b14183a9c *tests/testthat/test-rarefysamples.R
 1f3dec66397f68b1d66ff7d4daa6393a *tests/testthat/test-runResampling.R
