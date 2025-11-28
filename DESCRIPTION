@@ -1,7 +1,7 @@
 Package: BioTIMEr
 Type: Package
 Title: Tools to Use and Explore the 'BioTIME' Database
-Version: 0.2.6
+Version: 0.3.0
 Authors@R: c(
   person("Alban", "Sagouis", role = c("aut","cre"),
         email = "alban.sagouis@idiv.de",
@@ -33,7 +33,12 @@ Authors@R: c(
   person("European Research Council grant AdG MetaCHANGE 101098020",
         role = "fnd"),
   person("The Leverhulme Centre for Anthropocene Biodiversity grant RC-2018-021",
-        role = "fnd")
+        role = "fnd"),
+  person("German Centre for Integrative Biodiversity Research (iDiv) Halle-Jena-Leipzig",
+        role = "fnd", comment = c(ROR = "01jty7g66")),
+  person("Martin Luther University Halle-Wittenberg",
+        role = "fnd", comment = c(ROR = "05gqaka33")),
+  person("University of St Andrews", role = "fnd", comment = c(ROR = "02wn5qz54"))
 	)
 Maintainer: Alban Sagouis <alban.sagouis@idiv.de>
 License: MIT + file LICENSE
@@ -52,17 +57,20 @@ Description: The 'BioTIME' database was first published in
     and meta data, the full versions of which are freely available on the 'BioTIME'
     website <https://biotime.st-andrews.ac.uk/home.php>.
 Depends: R (>= 4.3.0)
-Imports: dplyr, tidyr, ggplot2, vegan, dggridR (>= 3.1.0), checkmate
-Suggests: maps, knitr, rmarkdown, formatR, testthat (>= 3.0.0), vdiffr
+Imports: tidyr, dplyr, data.table, ggplot2, broom, vegan, dggridR (>=
+        3.1.0), checkmate, lifecycle
+Suggests: maps, quarto, knitr, testthat (>= 3.0.0), vdiffr, rlang
 Config/testthat/edition: 3
 Config/testthat/parallel: true
+Config/testthat/start-first: *gridding*, *runResampling*, *metrics*,
+        *workflow*, *slopes*, *plots*, *scales*
 Language: en-GB
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.3
-VignetteBuilder: knitr
+VignetteBuilder: quarto
 NeedsCompilation: no
-Packaged: 2025-10-15 07:02:39 UTC; as80fywe
+Packaged: 2025-11-28 14:40:27 UTC; as80fywe
 Author: Alban Sagouis [aut, cre] (ORCID:
     <https://orcid.org/0000-0002-3827-1063>),
   Faye Moyes [aut] (ORCID: <https://orcid.org/0000-0001-9687-0593>),
@@ -84,6 +92,11 @@ Author: Alban Sagouis [aut, cre] (ORCID:
   European Research Council grant PoC BioCHANGE 727440 [fnd],
   European Research Council grant AdG MetaCHANGE 101098020 [fnd],
   The Leverhulme Centre for Anthropocene Biodiversity grant RC-2018-021
-    [fnd]
+    [fnd],
+  German Centre for Integrative Biodiversity Research (iDiv)
+    Halle-Jena-Leipzig [fnd] (ROR: <https://ror.org/01jty7g66>),
+  Martin Luther University Halle-Wittenberg [fnd] (ROR:
+    <https://ror.org/05gqaka33>),
+  University of St Andrews [fnd] (ROR: <https://ror.org/02wn5qz54>)
 Repository: CRAN
-Date/Publication: 2025-10-15 07:50:02 UTC
+Date/Publication: 2025-11-28 15:20:10 UTC

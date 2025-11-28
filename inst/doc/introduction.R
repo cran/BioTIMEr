@@ -1,78 +1,135 @@
-## ----setup, include=FALSE-----------------------------------------------------
-library(knitr)
-opts_chunk$set(echo = TRUE)
+## -----------------------------------------------------------------------------
+#| label: setup
+#| include: false
+#| cache: false
 
 library(vegan)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(dggridR)
+library(knitr)
 
 set.seed(19)
 
-## ----bt_package_loading, warning=FALSE, message=FALSE, eval=TRUE--------------
+
+## ----warning=FALSE, message=FALSE, eval=TRUE----------------------------------
+#| label: bt_package_loading
+#| cache: false
 # Install and load the latest version of BioTIMEr
 library(BioTIMEr)
 
-## ----data_description, warning=FALSE, message=FALSE, eval=TRUE, include=TRUE----
+
+## -----------------------------------------------------------------------------
+#| label: data_description
+#| cache: false
 # you can run the following commands to retrieve more information about the subsets.
 ?BTsubset_meta
 ?BTsubset_data
 
-## ----package info, warning=FALSE, message=FALSE, eval=TRUE, include=TRUE------
+
+## -----------------------------------------------------------------------------
+#| label: "package info"
+#| cache: false
 # you can also see a full list of BioTIMEr functions and help pages by:
 ??BioTIMEr
 
-## ----gridding_ex, cache=TRUE, echo=TRUE, message=FALSE, tidy=FALSE, include=TRUE----
-grid_samples <- gridding(meta = BTsubset_meta, btf = BTsubset_data, res = 12, resByData = FALSE)
+
+## -----------------------------------------------------------------------------
+#| label: tbl-gridding_ex1
+grid_samples <- gridding(
+  meta = BTsubset_meta,
+  btf = BTsubset_data,
+  res = 12,
+  resByData = FALSE
+)
 
 # Get a look at the output
-# grid_samples |> head() |> kable()
+grid_samples |> head() |> kable()
 
-## ----gridding_ex_plot, cache=TRUE, echo=TRUE, message=FALSE, fig.width=7, fig.height=3,tidy=FALSE, include=TRUE----
+
+## -----------------------------------------------------------------------------
+#| label: tbl-gridding_ex2
 check_res_1 <- grid_samples |>
-  group_by(STUDY_ID, StudyMethod) |>
-  summarise(n_cell = n_distinct(cell), n_aID = n_distinct(assemblageID), res = "res12")
+  summarise(
+    n_cell = n_distinct(cell),
+    n_aID = n_distinct(assemblageID),
+    res = "res12",
+    .by = c(STUDY_ID, StudyMethod)
+  )
 
 check_res_1 |> head(10) |> kable()
 
+## -----------------------------------------------------------------------------
+#| label: fig-gridding_ex
 # How many samples were there in each study?
 ggplot(data = check_res_1) +
-  geom_bar(mapping = aes(x = as.character(STUDY_ID), y = n_aID, fill = res),
-           stat = "identity") +
+  geom_bar(
+    mapping = aes(x = as.character(STUDY_ID), y = n_aID, fill = res),
+    stat = "identity"
+  ) +
   scale_fill_discrete(type = c("#155f49")) +
-  xlab("StudyID") + ylab("Number of assemblages in a study") +
+  xlab("StudyID") +
+  ylab("Number of assemblages in a study") +
   theme_bw() +
   theme(legend.position = "none")
 
 
-## ----gridding_ex2, cache=TRUE, echo=TRUE, message=FALSE, tidy=FALSE, include=TRUE,results='hold'----
+## -----------------------------------------------------------------------------
+#| label: gridding_ex2
+#| results: hold
 # define an alternative resolution of 14 (~10.7 km2 cells)
-grid_samples_14 <- gridding(meta = BTsubset_meta, btf = BTsubset_data, res = 14, resByData = FALSE)
+grid_samples_14 <- gridding(
+  meta = BTsubset_meta,
+  btf = BTsubset_data,
+  res = 14,
+  resByData = FALSE
+)
 
 # allow the spatial extent of the data to define the resolution
-grid_samples_auto <- gridding(meta = BTsubset_meta, btf = BTsubset_data, res = 12, resByData = TRUE)
+grid_samples_auto <- gridding(
+  meta = BTsubset_meta,
+  btf = BTsubset_data,
+  res = 12,
+  resByData = TRUE
+)
 # this option also returns a message with the automatically picked resolution:
 
-## ----gridding_ex3, cache=TRUE, echo=TRUE, message=FALSE, fig.width=7, fig.height=3,tidy=FALSE, include=TRUE----
+
+## -----------------------------------------------------------------------------
+#| label: fig-gridding_ex3
 check_res_2 <- grid_samples_14 |>
-  group_by(StudyMethod, STUDY_ID) |>
-  summarise(n_cell = n_distinct(cell), n_aID = n_distinct(assemblageID), res = "res14")
+  summarise(
+    n_cell = n_distinct(cell),
+    n_aID = n_distinct(assemblageID),
+    res = "res14",
+    .by = c(StudyMethod, STUDY_ID)
+  )
 
 check_res_3 <- grid_samples_auto |>
-  group_by(StudyMethod, STUDY_ID) |>
-  summarise(n_cell = n_distinct(cell), n_aID = n_distinct(assemblageID), res = "res15")
+  summarise(
+    n_cell = n_distinct(cell),
+    n_aID = n_distinct(assemblageID),
+    res = "res15",
+    .by = c(StudyMethod, STUDY_ID)
+  )
 
 checks <- rbind(check_res_1, check_res_2, check_res_3)
 
 ggplot(data = checks) +
-  geom_bar(mapping = aes(x = as.character(STUDY_ID), y = n_aID, fill = res),
-           stat = "identity", position = "dodge") +
-  scale_fill_discrete(type = c("#155f49","#66c1d1","#d9d956")) +
-  xlab("StudyID") + ylab("Number of assemblages in a study") +
+  geom_bar(
+    mapping = aes(x = as.character(STUDY_ID), y = n_aID, fill = res),
+    stat = "identity",
+    position = "dodge"
+  ) +
+  scale_fill_discrete(type = c("#155f49", "#66c1d1", "#d9d956")) +
+  xlab("StudyID") +
+  ylab("Number of assemblages in a study") +
   theme_bw()
 
-## ----gridding_map, cache=TRUE, echo=TRUE, message=FALSE, fig.width=7, fig.height=3,tidy=FALSE, include=TRUE,results='hold', figures='hold'----
+
+## -----------------------------------------------------------------------------
+#| label: fig-gridding_map
 ## The following example is built on the demonstrations in
 ## https://cran.r-project.org/web/packages/dggridR/vignettes/dggridR.html.
 
@@ -82,11 +139,11 @@ dgg_12 <- dggridR::dgconstruct(res = 12)
 # To simplify, we only map the grid cell boundaries for cells which
 # have observations.
 # NOTE: if you are working with the full BioTIME database, this step may take some time.
-grid_12 <- dggridR::dgcellstogrid(dgg_12, grid_samples$cell)
+grid_12 <- dggridR::dgcellstogrid(dgg_12, as.integer(grid_samples$cell))
 
 # Now let's follow the same steps and build a ~10.7 km2 global grid:
 dgg_14 <- dggridR::dgconstruct(res = 14)
-grid_14 <- dggridR::dgcellstogrid(dgg_14, grid_samples_14$cell)
+grid_14 <- dggridR::dgcellstogrid(dgg_14, as.integer(grid_samples_14$cell))
 
 # And we get some polygons for each country of the world, to create a background:
 countries <- ggplot2::map_data("world")
@@ -117,52 +174,84 @@ inset <- grid::viewport(width = 0.4, height = 0.4, x = 0.82, y = 0.45)  # the in
 print(zoom_in_map, vp = main)
 print(map_uk_locations, vp = inset)
 
-## ----resampling_ex, cache=TRUE, echo=TRUE, message=FALSE, tidy=FALSE, include=TRUE----
+
+## -----------------------------------------------------------------------------
+#| label: tbl-resampling_ex
 # First, if you are not sure you need this step,
 # you can always check how many samples there are in every year of the different time series:
 check_samples <- grid_samples |>
-  group_by(STUDY_ID, assemblageID, YEAR) |>
-  summarise(n_samples = n_distinct(SAMPLE_DESC), n_species = n_distinct(Species))
+  summarise(
+    n_samples = n_distinct(SAMPLE_DESC),
+    n_species = n_distinct(Species),
+    .by = c(STUDY_ID, assemblageID, YEAR)
+  )
 
 check_samples |> head(10) |> kable()
 
 
-## ----resampling_ex1, cache=TRUE, echo=TRUE, message=FALSE, tidy=FALSE, include=TRUE----
-# Let's apply resampling() then, using the data frame of the gridded data:
-grid_rare <- resampling(x = grid_samples, measure = "ABUNDANCE",
-                       resamps = 1, conservative = FALSE)
 
-## ----tests1, cache=TRUE, echo=TRUE, message=FALSE, tidy=TRUE, include=FALSE----
-#let's apply it then:
+## -----------------------------------------------------------------------------
+#| label: resampling_ex1
+# Let's apply resampling() then, using the data frame of the gridded data:
+grid_rare <- resampling(
+  x = grid_samples,
+  measure = "ABUNDANCE",
+  resamps = 1,
+  conservative = FALSE
+)
+
+
+## -----------------------------------------------------------------------------
+#| label: tests1
+#| include: false
+# Let's apply it then:
 
 #g rid_samples_temp <- subset(grid_samples, !grid_samples$BIOMASS==0) #to be deleted after Faye reviews the data and makes all 0=NAs
 # grid_rare <- resampling( x= grid_samples_test, measure ="BIOMASS", resamps = 1, conservative = FALSE)
 
-## ----resampling_ex12, cache=TRUE, echo=TRUE, message=FALSE, tidy=TRUE, include=TRUE----
+
+## -----------------------------------------------------------------------------
+#| label: resampling_ex12
 # Keep only observations with both abundance and biomass
-grid_rare_ab <- resampling(x = grid_samples, measure = c("ABUNDANCE", "BIOMASS"),
-                           resamps = 1, conservative = FALSE)
+grid_rare_ab <- resampling(
+  x = grid_samples,
+  measure = c("ABUNDANCE", "BIOMASS"),
+  resamps = 1,
+  conservative = FALSE
+)
 
 # Keep only sampling events where all observations within had both abundance and biomass to start with
-grid_rare_abT <- resampling(x = grid_samples, measure = c("ABUNDANCE", "BIOMASS"),
-                            resamps = 1, conservative = TRUE)
+grid_rare_abT <- resampling(
+  x = grid_samples,
+  measure = c("ABUNDANCE", "BIOMASS"),
+  resamps = 1,
+  conservative = TRUE)
 
-## ----resampling_ex3, cache=TRUE, echo=TRUE, message=FALSE, fig.width=7, fig.height=3,tidy=FALSE, include=TRUE,results='hold', figures='hold'----
+
+## -----------------------------------------------------------------------------
+#| label: fig-resampling_ex3
 # What is the number of samples in the year with the lowest sampling effort?
 ggplot(data = check_samples[check_samples$assemblageID == "18_335699",], aes(x = YEAR, y = n_samples)) +
   geom_col(aes(x = YEAR, y = n_samples), fill = "red", alpha = 0.5) +
   geom_segment(aes(x = 1926, y = min(n_samples) + 3,
                    xend = 1927, yend = min(n_samples)),
                arrow = arrow(length = unit(0.2, "cm"))) +
-  xlab("Year") + ylab("Number of samples") +
+  xlab("Year") +
+  ylab("Number of samples") +
   theme_bw()
 
 # In this case,the year 1927 had the lowest sampling effort, with 3 samples (arrow).
 
-## ----resampling_ex4, cache=TRUE, echo=TRUE, message=FALSE, fig.width=7, fig.height=3,tidy=FALSE, include=TRUE,results='hold', figures='hold'----
+
+## -----------------------------------------------------------------------------
+#| label: tbl-resampling_ex4
 # Let's implement the sample-based rarefaction by resampling the dataset 10 times.
-grid_rare_n10 <- resampling(x = grid_samples, measure = "ABUNDANCE", resamps = 10,
-                            conservative = FALSE)
+grid_rare_n10 <- resampling(
+  x = grid_samples,
+  measure = "ABUNDANCE",
+  resamps = 10,
+  conservative = FALSE
+)
 
 # Note that you may want to resample many more times (e.g. at least 30-100+ times, but up to 199
 # if e.g. working with the whole BioTIME data), depending on how many iterations you want a
@@ -173,13 +262,19 @@ grid_rare_n10 <- resampling(x = grid_samples, measure = "ABUNDANCE", resamps = 1
 # Each resampling iteration will be identified as resamp = 1:n, in this case 1:10.
 # Now we can check if there are differences across the first 3 of these iterations:
 
-check_resamps <- grid_rare_n10[grid_rare_n10$resamp < 4,] |>
-  group_by(STUDY_ID, assemblageID, resamp) |>
-  summarise(n_obs = n(), n_species = n_distinct(Species), n_year = n_distinct(YEAR))
+check_resamps <- grid_rare_n10[grid_rare_n10$resamp < 4, ] |>
+  summarise(
+    n_obs = n(),
+    n_species = n_distinct(Species),
+    n_year = n_distinct(YEAR),
+    .by = c(STUDY_ID, assemblageID, resamp)
+  )
 
 check_resamps |> head(10) |> kable()
 
-## ----metrics, cache=TRUE, echo=TRUE, message=FALSE, fig.width=7, fig.height=3,tidy=FALSE, include=TRUE, figures='hold'----
+
+## -----------------------------------------------------------------------------
+#| label: metrics
 # Get alpha metrics estimates:
 alpha_metrics <- getAlphaMetrics(x = grid_rare, measure = "ABUNDANCE")
 # see also help("getAlphaMetrics") for more details on the metrics
@@ -195,7 +290,10 @@ beta_metrics <- getBetaMetrics(x = grid_rare, measure = "ABUNDANCE")
 beta_metrics |> head(6) |> kable()
 # NOTE the functions used the rarefied data with only one resampling iteration
 
-## ----tests2, cache=TRUE, echo=TRUE, message=FALSE, fig.width=7, fig.height=3,tidy=FALSE, include=FALSE, figures='hold'----
+
+## -----------------------------------------------------------------------------
+#| label: tests2
+#| include: false
 # # Get alpha metrics estimates:
 # alpha_metrics <- getAlphaMetrics(x = grid_rare_ab, measure = "BIOMASS")
 # #see also help("getAlphaMetrics") for more details on the metrics
@@ -210,111 +308,186 @@ beta_metrics |> head(6) |> kable()
 # #Have a quick look at the output
 # beta_metrics |> head(6) |> kable()
 
-## ----trends, cache=TRUE, echo=TRUE, message=FALSE, fig.width=7, fig.height=3,tidy=FALSE, include=TRUE,results='hold', figures='hold'----
-# Let's apply it then:
-alpha_slopes <- getLinearRegressions(x = alpha_metrics, divType = "alpha",
-                                     pThreshold = 0.05) #for alpha metrics
 
+## -----------------------------------------------------------------------------
+#| label: tbl-trends1
+# Let's apply it then:
+alpha_slopes <- getLinearRegressions(
+  x = alpha_metrics,
+  pThreshold = 0.05
+) #for alpha metrics
 
 # Have a quick look at the output
 alpha_slopes |> head(6) |> kable()
 
-beta_slopes <- getLinearRegressions(x = beta_metrics, divType = "beta",
-                                    pThreshold = 0.05)  #for beta metrics
+## -----------------------------------------------------------------------------
+#| label: tbl-trends2
+# Let's apply it then:
+beta_slopes <- getLinearRegressions(
+  x = beta_metrics,
+  pThreshold = 0.05
+) #for beta metrics
 
 # Have a quick look at the output
-# beta_slopes |> head(6) |> kable()
+beta_slopes |> head(6) |> kable()
 
-## ----trends2, cache=TRUE, echo=TRUE, message=FALSE, fig.width=10, fig.height=7,tidy=FALSE, include=TRUE----
+
+## -----------------------------------------------------------------------------
+#| label: tbl-trends3
+#| fig-width: 10
+#| fig-height: 7
 # First, how many assemblages in our dataset show a moderate evidence (P < 0.05) of change in alpha diversity?
-check_alpha_trend <- alpha_slopes |>
-  group_by(metric) |>
+alpha_slopes |>
   filter(significance == 1) |>   # or use filter(pvalue<0.05)
-  summarise(n_sig = n_distinct(assemblageID), mean(slope))
-
-check_alpha_trend |> kable()
+  summarise(n_sig = n_distinct(assemblageID), mean(slope), .by = metric) |>
+  kable()
 
 # We can see that only a few (<40) of the assemblage time series actually show a significant
 # trend of change over time, independently of the metric used. This indicates that in most
 # time series in the studies we analysed alpha diversity is not really changing through time.
 
-## ----trends3, cache=TRUE, echo=TRUE, message=FALSE, fig.width=7.2, fig.height=5,tidy=FALSE, include=TRUE,results='hold'----
 
+## -----------------------------------------------------------------------------
+#| label: fig-trends
+#| fig-width: 7.2
+#| fig-height: 5
 # Get a slope per assemblageID and metric
 alpha_slopes_simp <- alpha_slopes |>
-  group_by(assemblageID, metric, pvalue) |>
-  filter(significance == 1) |>   #select only the assemblages with significant trends
-  summarise(slope = unique(slope))
+  filter(significance == 1) |> #select only the assemblages with significant trends
+  summarise(slope = unique(slope), .by = c(assemblageID, metric, pvalue))
 
 # Calculate the mean slope and CIs
 stats_alpha <- alpha_slopes_simp |>
-  group_by(metric) |>
-  summarise(mean_slope = mean(slope), #mean
-            ci_slope = qt(0.95, df = length(slope) - 1) * (sd(slope, na.rm = TRUE) / sqrt(length(slope)))) #margin of error
+  summarise(
+    mean_slope = mean(slope), #mean
+    ci_slope = qt(0.95, df = length(slope) - 1) *
+      (sd(slope, na.rm = TRUE) / sqrt(length(slope))),
+    .by = metric
+  ) #margin of error
 
 # Let's put it all together
 ggplot(data = alpha_slopes_simp) +
   geom_histogram(aes(x = slope, fill = metric), bins = 25) +
-  #geom_density(alpha=0.5)+ #in case you what a density plot instead
-  geom_vline(aes(xintercept = 0), linetype = 3, colour = "grey",linewidth = 0.5) + #add slope=0 line
-  geom_vline(data = stats_alpha, aes(xintercept = mean_slope), linetype = 1,
-             linewidth = 0.5,colour = "black") + #mean
-  geom_vline(data = stats_alpha, aes(xintercept = mean_slope - ci_slope),
-             linetype = 2, linewidth = 0.5, colour = "black") + #lower confidence interval
-  geom_vline(data = stats_alpha, aes(xintercept = mean_slope + ci_slope),
-             linetype = 2, linewidth = 0.5, colour = "black") + #upper confidence interval
+  #geom_density(alpha=0.5)+ #in case you want a density plot instead
+  geom_vline(
+    aes(xintercept = 0),
+    linetype = 3,
+    colour = "grey",
+    linewidth = 0.5
+  ) + #add slope=0 line
+  geom_vline(
+    data = stats_alpha,
+    aes(xintercept = mean_slope),
+    linetype = 1,
+    linewidth = 0.5,
+    colour = "black"
+  ) + #mean
+  geom_vline(
+    data = stats_alpha,
+    aes(xintercept = mean_slope - ci_slope),
+    linetype = 2,
+    linewidth = 0.5,
+    colour = "black"
+  ) + #lower confidence interval
+  geom_vline(
+    data = stats_alpha,
+    aes(xintercept = mean_slope + ci_slope),
+    linetype = 2,
+    linewidth = 0.5,
+    colour = "black"
+  ) + #upper confidence interval
   facet_wrap(~metric, scales = "free") +
-  scale_fill_biotime() +  #using the customize BioTIME colour scale. See help("scale_color_biotime") for more options.
+  scale_fill_biotime() + #using the customize BioTIME colour scale. See help("scale_color_biotime") for more options.
   ggtitle("Alpha diversity change") +
   theme_bw() +
-  theme(legend.position = "none",plot.title = element_text(size = 11, hjust = 0.5))
+  theme(
+    legend.position = "none",
+    plot.title = element_text(size = 11, hjust = 0.5)
+  )
 
 
-## ----trends4, cache=TRUE, echo=FALSE, message=FALSE, fig.width=7.2, fig.height=1.9,tidy=FALSE, include=TRUE,results='hold'----
+
+## -----------------------------------------------------------------------------
+#| label: fig-trends2
+#| fig-width: 7.2
+#| fig-height: 1.9
 
 # Get a slope per assemblageID and metric
 beta_slopes_simp <- beta_slopes |>
-  group_by(assemblageID, metric, pvalue) |>
-  filter(significance == 1) |>     #select only the assemblages with significant trends
-  summarise(slope = unique(slope))
+  filter(significance == 1) |> #select only the assemblages with significant trends
+  summarise(slope = unique(slope), .by = c(assemblageID, metric, pvalue))
 
 # Calculate the mean slope and CIs
 stats_beta <- beta_slopes_simp |>
-  group_by(metric) |>
-  summarise(mean_slope = mean(slope), #mean
-            ci_slope = qt(0.95, df = length(slope) - 1) * (sd(slope, na.rm  = TRUE) / sqrt(length(slope)))) #margin of error
+  summarise(
+    mean_slope = mean(slope), #mean
+    ci_slope = qt(0.95, df = length(slope) - 1) *
+      (sd(slope, na.rm = TRUE) / sqrt(length(slope))),
+    .by = metric
+  ) #margin of error
 
-#Let's put it all together
+# Let's put it all together
 ggplot(data = beta_slopes_simp) +
   geom_histogram(aes(x = slope, fill = metric), bins = 25) +
-  #geom_density(alpha=0.5)+ #in case you what a density plot instead
-  geom_vline(aes(xintercept = 0), linetype = 3, colour = "grey", linewidth = 0.5) + #add slope=0 line
-  geom_vline(data = stats_beta, aes(xintercept = mean_slope), linetype = 1,
-             linewidth = 0.5, colour = "black") + #mean
-  geom_vline(data = stats_beta, aes(xintercept = mean_slope - ci_slope),
-             linetype = 2, linewidth = 0.5, colour = "black") + #lower confidence interval
-  geom_vline(data = stats_beta, aes(xintercept = mean_slope + ci_slope),
-             linetype = 2, linewidth = 0.5, colour = "black") + #upper confidence interval
+  #geom_density(alpha=0.5)+ #in case you want a density plot instead
+  geom_vline(
+    aes(xintercept = 0),
+    linetype = 3,
+    colour = "grey",
+    linewidth = 0.5
+  ) + #add slope=0 line
+  geom_vline(
+    data = stats_beta,
+    aes(xintercept = mean_slope),
+    linetype = 1,
+    linewidth = 0.5,
+    colour = "black"
+  ) + #mean
+  geom_vline(
+    data = stats_beta,
+    aes(xintercept = mean_slope - ci_slope),
+    linetype = 2,
+    linewidth = 0.5,
+    colour = "black"
+  ) + #lower confidence interval
+  geom_vline(
+    data = stats_beta,
+    aes(xintercept = mean_slope + ci_slope),
+    linetype = 2,
+    linewidth = 0.5,
+    colour = "black"
+  ) + #upper confidence interval
   facet_wrap(~metric, scales = "free") +
-  scale_fill_biotime() +  #using the customize BioTIME colour scale. See help("scale_color_biotime") for more options.
+  scale_fill_biotime() + #using the customize BioTIME colour scale. See help("scale_color_biotime") for more options.
   ggtitle("Beta diversity change") +
   theme_bw() +
-  theme(legend.position = "none",plot.title = element_text(size = 11, hjust = 0.5))
+  theme(
+    legend.position = "none",
+    plot.title = element_text(size = 11, hjust = 0.5)
+  )
 
 
-## ----trends5, cache=TRUE, echo=TRUE, message=FALSE, fig.width=7.2, fig.height=1.9,tidy=FALSE, include=TRUE,results='hold'----
+
+## -----------------------------------------------------------------------------
+#| label: trends5
 # Hint: If you wish to plot all metrics together, simply merge you alpha_slopes and
 # beta_slopes dataframes beforehand.
 
-## ----trends6, cache=TRUE, echo=TRUE, message=FALSE, fig.width=7.2, fig.height=2.3,tidy=FALSE, include=TRUE,results='hold'----
+
+## -----------------------------------------------------------------------------
+#| label: fig-trends6
+#| fig-width: 7.2
+#| fig-height: 2.3
 # First, we need to check the meta file and retrieve the information for the studies of interest
 #head(BTsubset_meta)
 meta <- select(BTsubset_meta, STUDY_ID, TAXA, REALM, CLIMATE)
 
 # Get a slope per assemblageID and metric
 alpha_slopes_simp <- alpha_slopes |>
-  group_by(assemblageID, metric, 'pvalue', significance) |>
-  summarise(slope = unique(slope))
+  summarise(
+    slope = unique(slope),
+    .by = c(assemblageID, metric, pvalue, significance)
+  )
 
 # Get back the Study ID by separating our assemblageID column into multiple other columns.
 alpha_slopes_simp <- alpha_slopes_simp |>
@@ -356,12 +529,18 @@ ggplot(data = alpha_slopes_set1, aes(x = slope, fill = TAXA)) +
   theme(plot.title = element_text(size = 11, hjust = 0.5))
 
 
-## ----trends7, cache=TRUE, echo=TRUE, message=FALSE, fig.width=7.2, fig.height=1.9, include=TRUE,results='hold'----
+
+## -----------------------------------------------------------------------------
+#| label: trends7
 # Now we see the full distribution of slopes of change for the Shannon index for the birds
 # and fish time series in our subset: all slopes are shown in grey, while in color we show
 # the subset of assemblages for which evidence (P < 0.05) of change was detected.
 
-## ----trends8, cache=TRUE, echo=TRUE, message=FALSE, tidy=FALSE, include=TRUE,fig.width=7.2, fig.height=5, eval=TRUE,results='hold', figures='hold'----
+
+## -----------------------------------------------------------------------------
+#| label: fig-trends8
+#| fig-width: 7.2
+#| fig-height: 5
 
 # Let's go back to the data frame with the yearly values and select our relevant data for plotting
 alpha_metrics_set <- subset(alpha_metrics, assemblageID == "18_335699")
@@ -380,8 +559,10 @@ alpha_slopes_set2 <- subset(alpha_slopes, assemblageID == "18_335699")
 name_assemblage <- unique(alpha_slopes_set2$assemblageID)
 
 # Merge info
-alpha_metr_slop<- left_join(alpha_slopes_set2, alpha_metrics_set_long,
-                                join_by(assemblageID, metric))
+alpha_metr_slop<- left_join(
+  x = alpha_slopes_set2,
+  y = alpha_metrics_set_long,
+  by = join_by(assemblageID, metric))
 
 # Let's put it all together
 ggplot(data = alpha_metr_slop, aes(x = YEAR, y = value)) +
@@ -393,13 +574,22 @@ ggplot(data = alpha_metr_slop, aes(x = YEAR, y = value)) +
     facet_wrap(~metric, scales = "free") +
     scale_fill_biotime() +
     ggtitle(paste("Assemblage", name_assemblage)) + ylab("Diversity") +
-    theme_bw() + theme(plot.title = element_text(size = 11, hjust = 0.5))
+    theme_bw() +
+    theme(plot.title = element_text(size = 11, hjust = 0.5))
 
 
-## ----trends9, cache=TRUE, echo=TRUE, message=FALSE, fig.width=10, fig.height=7,tidy=FALSE, include=FALSE,results='hold', figures='hold'----
+
+## -----------------------------------------------------------------------------
+#| label: trends9
+#| include: false
+
 # Hint: If you want to draw the p-value on the plot, you can try using the #ggpmisc::stat_fit_glance which takes anything passed through lm() in R and
 #allows it to processed and printed using ggplot2.
 
-## ----citation, cache=TRUE, echo=FALSE, message=FALSE, fig.width=10, fig.height=7,tidy=FALSE, include=FALSE,results='hold', figures='hold'----
+
+## -----------------------------------------------------------------------------
+#| label: citation
+#| cache: false
+
 citation("BioTIMEr")
 
