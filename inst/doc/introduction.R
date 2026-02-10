@@ -13,7 +13,7 @@ library(knitr)
 set.seed(19)
 
 
-## ----warning=FALSE, message=FALSE, eval=TRUE----------------------------------
+## -----------------------------------------------------------------------------
 #| label: bt_package_loading
 #| cache: false
 # Install and load the latest version of BioTIMEr
@@ -206,7 +206,7 @@ grid_rare <- resampling(
 #| include: false
 # Let's apply it then:
 
-#g rid_samples_temp <- subset(grid_samples, !grid_samples$BIOMASS==0) #to be deleted after Faye reviews the data and makes all 0=NAs
+# grid_samples_temp <- subset(grid_samples, !grid_samples$BIOMASS==0) #to be deleted after Faye reviews the data and makes all 0=NAs
 # grid_rare <- resampling( x= grid_samples_test, measure ="BIOMASS", resamps = 1, conservative = FALSE)
 
 
@@ -231,11 +231,24 @@ grid_rare_abT <- resampling(
 ## -----------------------------------------------------------------------------
 #| label: fig-resampling_ex3
 # What is the number of samples in the year with the lowest sampling effort?
-ggplot(data = check_samples[check_samples$assemblageID == "18_335699",], aes(x = YEAR, y = n_samples)) +
+ggplot(
+  data = check_samples[check_samples$assemblageID == "18_335699", ],
+  aes(x = YEAR, y = n_samples)
+) +
   geom_col(aes(x = YEAR, y = n_samples), fill = "red", alpha = 0.5) +
-  geom_segment(aes(x = 1926, y = min(n_samples) + 3,
-                   xend = 1927, yend = min(n_samples)),
-               arrow = arrow(length = unit(0.2, "cm"))) +
+  annotate(
+    geom = "segment",
+    x = 1926,
+    y = min(
+      check_samples[check_samples$assemblageID == "18_335699", ]$n_samples
+    ) +
+      3,
+    xend = 1927,
+    yend = min(
+      check_samples[check_samples$assemblageID == "18_335699", ]$n_samples
+    ),
+    arrow = arrow(length = unit(0.2, "cm"))
+  ) +
   xlab("Year") +
   ylab("Number of samples") +
   theme_bw()
@@ -338,8 +351,12 @@ beta_slopes |> head(6) |> kable()
 #| fig-height: 7
 # First, how many assemblages in our dataset show a moderate evidence (P < 0.05) of change in alpha diversity?
 alpha_slopes |>
-  filter(significance == 1) |>   # or use filter(pvalue<0.05)
-  summarise(n_sig = n_distinct(assemblageID), mean(slope), .by = metric) |>
+  filter(significance == 1) |> # or use filter(pvalue<0.05)
+  summarise(
+    n_sig = n_distinct(assemblageID),
+    slope = mean(slope),
+    .by = metric
+  ) |>
   kable()
 
 # We can see that only a few (<40) of the assemblage time series actually show a significant

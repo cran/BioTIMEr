@@ -1,7 +1,7 @@
 Package: BioTIMEr
 Type: Package
 Title: Tools to Use and Explore the 'BioTIME' Database
-Version: 0.3.0
+Version: 0.3.1
 Authors@R: c(
   person("Alban", "Sagouis", role = c("aut","cre"),
         email = "alban.sagouis@idiv.de",
@@ -42,7 +42,7 @@ Authors@R: c(
 	)
 Maintainer: Alban Sagouis <alban.sagouis@idiv.de>
 License: MIT + file LICENSE
-URL: https://github.com/bioTIMEHub/BioTIMEr
+URL: https://biotimehub.github.io/BioTIMEr/
 BugReports: https://github.com/bioTIMEHub/BioTIMEr/issues
 Description: The 'BioTIME' database was first published in
     2018 and inspired ideas, questions, project and research
@@ -70,7 +70,7 @@ LazyData: true
 RoxygenNote: 7.3.3
 VignetteBuilder: quarto
 NeedsCompilation: no
-Packaged: 2025-11-28 14:40:27 UTC; as80fywe
+Packaged: 2026-02-10 09:29:45 UTC; as80fywe
 Author: Alban Sagouis [aut, cre] (ORCID:
     <https://orcid.org/0000-0002-3827-1063>),
   Faye Moyes [aut] (ORCID: <https://orcid.org/0000-0001-9687-0593>),
@@ -99,4 +99,4 @@ Author: Alban Sagouis [aut, cre] (ORCID:
     <https://ror.org/05gqaka33>),
   University of St Andrews [fnd] (ROR: <https://ror.org/02wn5qz54>)
 Repository: CRAN
-Date/Publication: 2025-11-28 15:20:10 UTC
+Date/Publication: 2026-02-10 10:00:02 UTC
