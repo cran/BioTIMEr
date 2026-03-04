@@ -1,7 +1,7 @@
 Package: BioTIMEr
 Type: Package
 Title: Tools to Use and Explore the 'BioTIME' Database
-Version: 0.3.1
+Version: 0.3.2
 Authors@R: c(
   person("Alban", "Sagouis", role = c("aut","cre"),
         email = "alban.sagouis@idiv.de",
@@ -38,7 +38,8 @@ Authors@R: c(
         role = "fnd", comment = c(ROR = "01jty7g66")),
   person("Martin Luther University Halle-Wittenberg",
         role = "fnd", comment = c(ROR = "05gqaka33")),
-  person("University of St Andrews", role = "fnd", comment = c(ROR = "02wn5qz54"))
+  person("University of St Andrews", role = "fnd",
+        comment = c(ROR = "02wn5qz54"))
 	)
 Maintainer: Alban Sagouis <alban.sagouis@idiv.de>
 License: MIT + file LICENSE
@@ -70,7 +71,7 @@ LazyData: true
 RoxygenNote: 7.3.3
 VignetteBuilder: quarto
 NeedsCompilation: no
-Packaged: 2026-02-10 09:29:45 UTC; as80fywe
+Packaged: 2026-03-04 10:18:03 UTC; as80fywe
 Author: Alban Sagouis [aut, cre] (ORCID:
     <https://orcid.org/0000-0002-3827-1063>),
   Faye Moyes [aut] (ORCID: <https://orcid.org/0000-0001-9687-0593>),
@@ -99,4 +100,4 @@ Author: Alban Sagouis [aut, cre] (ORCID:
     <https://ror.org/05gqaka33>),
   University of St Andrews [fnd] (ROR: <https://ror.org/02wn5qz54>)
 Repository: CRAN
-Date/Publication: 2026-02-10 10:00:02 UTC
+Date/Publication: 2026-03-04 10:40:08 UTC
